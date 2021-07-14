@@ -4,6 +4,7 @@ namespace IF4101_proyecto3_api
 {
     public class WeatherForecast
     {
+        // test
         public DateTime Date { get; set; }
 
         public int TemperatureC { get; set; }
