@@ -13,44 +13,12 @@ namespace IF4101_proyecto3_api.Controllers
     [ApiController]
     public class AppointmentController : ControllerBase
     {
-        // GET: api/<AppointmentController>
-        //[HttpGet]
-        //public IEnumerable<string> Get()
-        //{
-        //    return new string[] { "value1", "value2" };
-        //}
-
-        //// GET api/<AppointmentController>/5
-        //[HttpGet("{id}")]
-        //public string Get(int id)
-        //{
-        //    return "value";
-        //}
-
-        //// POST api/<AppointmentController>
-        [HttpPost]
-        public void Post([FromBody] string value)
-        {
-        }
-
-        //// PUT api/<AppointmentController>/5
-        //[HttpPut("{id}")]
-        //public void Put(int id, [FromBody] string value)
-        //{
-        //}
-
-        //// DELETE api/<AppointmentController>/5
-        //[HttpDelete("{id}")]
-        //public void Delete(int id)
-        //{
-        //}
-
         [HttpPost]
         [Route("GetAppointmentByCard")]
-        public IActionResult GetAppointmentByCard(string paitentCardId)
+        public IActionResult GetAppointmentByCard(string patientCardId)
         {
             ConnectionDb connectionDb = new();
-            return Ok(this.ExcGetAppointmetsByCard(connectionDb, paitentCardId));
+            return Ok(this.ExcGetAppointmetsByCard(connectionDb, patientCardId));
         }
 
         private List<AppointmentViewModel> ExcGetAppointmetsByCard(ConnectionDb connectionDb, string PaitentCardId)

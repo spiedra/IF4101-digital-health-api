@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using IF4101_proyecto3_web.Data;
+using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -10,36 +12,59 @@ namespace IF4101_proyecto3_api.Controllers
     [ApiController]
     public class LogInController : ControllerBase
     {
-        // GET: api/<LogInController>
-        [HttpGet]
-        public IActionResult Get()
-        {
-            return Ok(new string[] { "value1", "value2" });
-        }
-
-        // GET api/<LogInController>/5
-        [HttpGet("{id}")]
-        public string Get(int id)
-        {
-            return "value";
-        }
-
-        // POST api/<LogInController>
         [HttpPost]
-        public void Post([FromBody] string value)
+        [Route("LogIn")]
+        public IActionResult ValidateInputLogIn(string patientIdCard, string paitientPassword)
         {
+            if (ModelState.IsValid)
+            {
+                ConnectionDb connectionDb = new();
+                this.ExcValidateLogIn(connectionDb, patientIdCard, paitientPassword);
+                if (this.ReadValidateLogIn(connectionDb))
+                {
+                    return Ok();
+                }
+            }
+            return NotFound();
         }
 
-        // PUT api/<LogInController>/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody] string value)
+        [HttpPost]
+        [Route("SignIn")]
+        public IActionResult SingIn(string patientIdCard, string paitientPassword)
         {
+            if (ModelState.IsValid)
+            {
+                ConnectionDb connectionDb = new();
+                this.ExcValidateLogIn(connectionDb, patientIdCard, paitientPassword);
+                if (this.ReadValidateLogIn(connectionDb))
+                {
+                    return Ok();
+                }
+            }
+            return NotFound();
         }
 
-        // DELETE api/<LogInController>/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
+        private void ExcValidateLogIn(ConnectionDb connectionDb,
+                                      string patientIdCard,
+                                      string patientPassword)
         {
+            string paramId = "@param_ID_CARD"
+             , paramPassword = "@param_PASSWORD"
+             , commandText = "PATIENT.sp_VALIDATE_PATIENT_LOG_IN";
+            connectionDb.InitSqlComponents(commandText);
+            connectionDb.CreateParameter(paramId, SqlDbType.VarChar, patientIdCard);
+            connectionDb.CreateParameter(paramPassword, SqlDbType.VarChar, patientPassword);
+            connectionDb.CreateParameterOutput();
+            connectionDb.ExcecuteReader();
+        }
+
+        private bool ReadValidateLogIn(ConnectionDb connectionDb)
+        {
+            if ((int)connectionDb.ParameterReturn.Value == 1)
+                return true;
+
+            connectionDb.SqlConnection.Close();
+            return false;
         }
     }
 }
