@@ -2,6 +2,7 @@
 using IF4101_proyecto3_api.Utility;
 using IF4101_proyecto3_web.Data;
 using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Data;
 
 namespace IF4101_proyecto3_api.Controllers
@@ -21,6 +22,15 @@ namespace IF4101_proyecto3_api.Controllers
                 return Ok("Patient successfully registered");
             }
             return Ok("User already exist");
+        }
+
+        [HttpPost]
+        [Route("SignIn")]
+        public IActionResult GetPatientPersonalInformation(string idCard)
+        {
+            ConnectionDb connectionDb = new();
+            ExcGetPatientPersonalInformation(connectionDb, idCard);
+            return Ok(ReadGetPatientPersonalInformation(connectionDb));
         }
 
         private static void ExcRegisterPatient(ConnectionDb connectionDb, PatientModel patient)
@@ -49,6 +59,37 @@ namespace IF4101_proyecto3_api.Controllers
             connectionDb.CreateParameter(paramAddress, SqlDbType.VarChar, paramPhoneNumber2);
             connectionDb.CreateParameterOutput();
             connectionDb.ExcecuteReader();
+        }
+
+        private static void ExcGetPatientPersonalInformation(ConnectionDb connectionDb, string idCard)
+        {
+            string paramIdCard = "@param_ID_CARD"
+                , commandText = "PATIENT.sp_REGISTER_PATIENT";
+            connectionDb.InitSqlComponents(commandText);
+            connectionDb.CreateParameter(paramIdCard, SqlDbType.VarChar, idCard);
+            connectionDb.ExcecuteReader();
+        }
+
+        private static List<PatientModel> ReadGetPatientPersonalInformation(ConnectionDb connectionDb)
+        {
+            List<PatientModel> list = new List<PatientModel>();
+            while (connectionDb.SqlDataReader.Read())
+            {
+                list.Add(new()
+                {
+                    IdCard = connectionDb.SqlDataReader.GetString(0),
+                    Name = connectionDb.SqlDataReader.GetString(1),
+                    LastName = connectionDb.SqlDataReader.GetString(2),
+                    Age = connectionDb.SqlDataReader.GetInt32(3),
+                    BloodType = connectionDb.SqlDataReader.GetString(4),
+                    CivilStatus = connectionDb.SqlDataReader.GetString(5),
+                    Address = connectionDb.SqlDataReader.GetString(6),
+                    PhoneNumber1 = connectionDb.SqlDataReader.GetString(7),
+                    PhoneNumber2 = connectionDb.SqlDataReader.GetString(8),
+                });
+            }
+            connectionDb.SqlConnection.Close();
+            return list;
         }
     }
 }
