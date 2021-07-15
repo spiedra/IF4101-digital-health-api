@@ -23,9 +23,7 @@ namespace IF4101_proyecto3_api.Controllers
             return NotFound();
         }
 
-        private void ExcValidateLogIn(ConnectionDb connectionDb,
-                                      string patientIdCard,
-                                      string patientPassword)
+        private static void ExcValidateLogIn(ConnectionDb connectionDb, string patientIdCard, string patientPassword)
         {
             string paramId = "@param_ID_CARD"
              , paramPassword = "@param_PASSWORD"
