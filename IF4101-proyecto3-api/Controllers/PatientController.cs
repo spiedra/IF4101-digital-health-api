@@ -25,11 +25,11 @@ namespace IF4101_proyecto3_api.Controllers
         }
 
         [HttpPost]
-        [Route("SignIn")]
-        public IActionResult GetPatientPersonalInformation(string idCard)
+        [Route("GetPersonalInformation")]
+        public IActionResult GetPatientPersonalInformation([FromBody] PatientModel patient)
         {
             ConnectionDb connectionDb = new();
-            ExcGetPatientPersonalInformation(connectionDb, idCard);
+            ExcGetPatientPersonalInformation(connectionDb, patient);
             return Ok(ReadGetPatientPersonalInformation(connectionDb));
         }
 
@@ -61,12 +61,12 @@ namespace IF4101_proyecto3_api.Controllers
             connectionDb.ExcecuteReader();
         }
 
-        private static void ExcGetPatientPersonalInformation(ConnectionDb connectionDb, string idCard)
+        private static void ExcGetPatientPersonalInformation(ConnectionDb connectionDb, PatientModel patient)
         {
             string paramIdCard = "@param_ID_CARD"
-                , commandText = "PATIENT.sp_REGISTER_PATIENT";
+                , commandText = "PATIENT.sp_GET_PATIENT_PERSONAL_INFORMATION";
             connectionDb.InitSqlComponents(commandText);
-            connectionDb.CreateParameter(paramIdCard, SqlDbType.VarChar, idCard);
+            connectionDb.CreateParameter(paramIdCard, SqlDbType.VarChar, patient.IdCard);
             connectionDb.ExcecuteReader();
         }
 
