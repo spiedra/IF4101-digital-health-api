@@ -16,32 +16,27 @@ namespace IF4101_proyecto3_api.Controllers
         [Route("LogIn")]
         public IActionResult ValidateInputLogIn(string patientIdCard, string paitientPassword)
         {
-            if (ModelState.IsValid)
+            ConnectionDb connectionDb = new();
+            ExcValidateLogIn(connectionDb, patientIdCard, paitientPassword);
+            if (ReadParameterReturn(connectionDb))
             {
-                ConnectionDb connectionDb = new();
-                this.ExcValidateLogIn(connectionDb, patientIdCard, paitientPassword);
-                if (this.ReadValidateLogIn(connectionDb))
-                {
-                    return Ok();
-                }
+                return Ok();
             }
             return NotFound();
         }
 
         [HttpPost]
         [Route("SignIn")]
-        public IActionResult SingIn(string patientIdCard, string paitientPassword)
+        public IActionResult SignInPatient(string idCard, string name, string lastName, string password, int age,
+                                           string bloodType, string civilStatus, string address)
         {
-            if (ModelState.IsValid)
+            ConnectionDb connectionDb = new();
+            ExcRegisterPatient(connectionDb, idCard, name, lastName, password, age, bloodType, civilStatus, address);
+            if (this.ReadParameterReturn(connectionDb))
             {
-                ConnectionDb connectionDb = new();
-                this.ExcValidateLogIn(connectionDb, patientIdCard, paitientPassword);
-                if (this.ReadValidateLogIn(connectionDb))
-                {
-                    return Ok();
-                }
+                return Ok();
             }
-            return NotFound();
+            return Ok("User already exist");
         }
 
         private void ExcValidateLogIn(ConnectionDb connectionDb,
@@ -58,7 +53,32 @@ namespace IF4101_proyecto3_api.Controllers
             connectionDb.ExcecuteReader();
         }
 
-        private bool ReadValidateLogIn(ConnectionDb connectionDb)
+        private void ExcRegisterPatient(ConnectionDb connectionDb, string idCard, string name, string lastName,
+                                        string password, int age, string bloodType, string civilStatus, string address)
+        {
+            string paramIdCard = "@param_ID_CARD"
+             , paramName = "@param_NAME"
+             , paramLastName = "@param_LAST_NAME"
+             , paramPassword = "@param_PASSWORD"
+             , paramAge = "@param_AGE"
+             , paramBloodType = "@param_BLOOD_TYPE"
+             , paramCivilStatus = "@param_CIVIL_STATUS"
+             , paramAddress = "@@param_ADDRESS"
+             , commandText = "PATIENT.sp_REGISTER_PATIENT";
+            connectionDb.InitSqlComponents(commandText);
+            connectionDb.CreateParameter(paramIdCard, SqlDbType.VarChar, idCard);
+            connectionDb.CreateParameter(paramName, SqlDbType.VarChar, name);
+            connectionDb.CreateParameter(paramLastName, SqlDbType.VarChar, lastName);
+            connectionDb.CreateParameter(paramPassword, SqlDbType.VarChar, password);
+            connectionDb.CreateParameter(paramAge, SqlDbType.VarChar, age);
+            connectionDb.CreateParameter(paramBloodType, SqlDbType.VarChar, bloodType);
+            connectionDb.CreateParameter(paramCivilStatus, SqlDbType.VarChar, civilStatus);
+            connectionDb.CreateParameter(paramAddress, SqlDbType.VarChar, address);
+            connectionDb.CreateParameterOutput();
+            connectionDb.ExcecuteReader();
+        }
+
+        private bool ReadParameterReturn(ConnectionDb connectionDb)
         {
             if ((int)connectionDb.ParameterReturn.Value == 1)
                 return true;
