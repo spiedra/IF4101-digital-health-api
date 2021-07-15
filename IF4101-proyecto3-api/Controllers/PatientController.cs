@@ -33,6 +33,15 @@ namespace IF4101_proyecto3_api.Controllers
             return Ok(ReadGetPatientPersonalInformation(connectionDb));
         }
 
+        [HttpPost]
+        [Route("UpdatePersonalInformation")]
+        public IActionResult UpdatePatientPersonalInformation([FromBody] PatientModel patient)
+        {
+            ConnectionDb connectionDb = new();
+            ExcUpdatePatientPersonalInformation(connectionDb, patient);
+            return Ok("Patient successfully updated");
+        }
+
         private static void ExcRegisterPatient(ConnectionDb connectionDb, PatientModel patient)
         {
             string paramIdCard = "@param_ID_CARD"
@@ -68,6 +77,23 @@ namespace IF4101_proyecto3_api.Controllers
             connectionDb.InitSqlComponents(commandText);
             connectionDb.CreateParameter(paramIdCard, SqlDbType.VarChar, patient.IdCard);
             connectionDb.ExcecuteReader();
+        }
+
+        private static void ExcUpdatePatientPersonalInformation(ConnectionDb connectionDb, PatientModel patient)
+        {
+            string paramIdCard = "@param_ID_CARD"
+                , paramCivilStatus = "@param_CIVIL_STATUS"
+                , paramPhoneNumber1 = "@param_PHONE_NUMBER_1"
+                , paramPhoneNumber2 = "@param_PHONE_NUMBER_2"
+                , paramAddress = "@param_ADDRESS"
+                , commandText = "PATIENT.sp_UPDATE_PATIENT_PERSONAL_INFORMATION";
+            connectionDb.InitSqlComponents(commandText);
+            connectionDb.CreateParameter(paramIdCard, SqlDbType.VarChar, patient.IdCard);
+            connectionDb.CreateParameter(paramCivilStatus, SqlDbType.VarChar, patient.CivilStatus);
+            connectionDb.CreateParameter(paramPhoneNumber1, SqlDbType.VarChar, patient.PhoneNumber1);
+            connectionDb.CreateParameter(paramPhoneNumber2, SqlDbType.VarChar, patient.PhoneNumber2);
+            connectionDb.CreateParameter(paramAddress, SqlDbType.VarChar, patient.Address);
+            connectionDb.ExecuteNonQuery();
         }
 
         private static List<PatientModel> ReadGetPatientPersonalInformation(ConnectionDb connectionDb)
