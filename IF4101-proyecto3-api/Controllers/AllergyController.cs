@@ -15,17 +15,15 @@ namespace IF4101_proyecto3_api.Controllers
     [ApiController]
     public class AllergyController : ControllerBase
     {
-        
-
-        // GET api/<AllergyController>/5
-        [HttpGet("{IdCard}")]
-        public List<AllergyViewModel> Get(string IdCard)
+        [HttpGet]
+        [Route("GetPatientAllergies")]
+        public IActionResult Get(string IdCard)
         {
             ConnectionDb connectionDb = new ConnectionDb();
             this.ExcListPatientAllergies(connectionDb, IdCard);
             List<AllergyViewModel> allergies = this.GetPatientAllergies(connectionDb);
             connectionDb.SqlConnection.Close();
-            return allergies;
+            return Ok(allergies);
         }
 
         private void ExcListPatientAllergies(ConnectionDb connectionDb, string IdCard)
@@ -50,8 +48,5 @@ namespace IF4101_proyecto3_api.Controllers
             }
             return allergies;
         }
-
-
-
     }
 }

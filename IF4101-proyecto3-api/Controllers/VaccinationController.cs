@@ -16,14 +16,15 @@ namespace IF4101_proyecto3_api.Controllers
     public class VaccinationController : ControllerBase
     {
         // GET api/<VaccinationController>/5
-        [HttpGet("{IdCard}")]
-        public List<VaccinationViewModel> Get(string IdCard)
+        [HttpGet]
+        [Route("GetPatientVaccines")]
+        public IActionResult Get(string IdCard)
         {
             ConnectionDb connectionDb = new ConnectionDb();
             this.ExcListVaccinePatient(connectionDb, IdCard);
             List<VaccinationViewModel> vaccines = this.GetPatientVaccination(connectionDb);
             connectionDb.SqlConnection.Close();
-            return vaccines;
+            return Ok(vaccines);
         }
 
         private void ExcListVaccinePatient(ConnectionDb connectionDb, string IdCard)
