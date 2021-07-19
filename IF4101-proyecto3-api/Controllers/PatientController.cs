@@ -7,12 +7,12 @@ using System.Data;
 
 namespace IF4101_proyecto3_api.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class PatientController : ControllerBase
     {
         [HttpPost]
-        [Route("SignIn")]
+        [Route("/SignIn")]
         public IActionResult SignInPatient([FromBody] PatientModel patient)
         {
             ConnectionDb connectionDb = new();
@@ -25,7 +25,7 @@ namespace IF4101_proyecto3_api.Controllers
         }
 
         [HttpGet]
-        [Route("GetPersonalInformation")]
+        [Route("/GetPersonalInformation")]
         public IActionResult GetPatientPersonalInformation(string idCard)
         {
             ConnectionDb connectionDb = new();
@@ -34,7 +34,7 @@ namespace IF4101_proyecto3_api.Controllers
         }
 
         [HttpPut]
-        [Route("UpdatePersonalInformation")]
+        [Route("/UpdatePersonalInformation")]
         public IActionResult UpdatePatientPersonalInformation([FromBody] PatientModel patient)
         {
             ConnectionDb connectionDb = new();

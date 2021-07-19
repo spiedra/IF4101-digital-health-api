@@ -32,6 +32,7 @@ namespace IF4101_proyecto3_api
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "IF4101_proyecto3_api", Version = "v1" });
             });
+            services.AddSwaggerGen();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -54,6 +55,8 @@ namespace IF4101_proyecto3_api
             {
                 endpoints.MapControllers();
             });
+
+            app.UseSwagger();
         }
     }
 }

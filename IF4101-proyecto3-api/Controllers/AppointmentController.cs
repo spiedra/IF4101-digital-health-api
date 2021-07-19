@@ -9,12 +9,12 @@ using System.Threading.Tasks;
 
 namespace IF4101_proyecto3_api.Controllers
 {
-    [Route("api/[controller]")]
+    //[Route("api/[controller]")]
     [ApiController]
     public class AppointmentController : ControllerBase
     {
         [HttpGet]
-        [Route("GetAppointmentByCard")]
+        [Route("/GetAppointmentByCard")]
         public IActionResult GetAppointmentByCard(string patientCardId)
         {
             ConnectionDb connectionDb = new();
