@@ -24,12 +24,21 @@ namespace IF4101_proyecto3_api.Controllers
             return Ok("User already exist");
         }
 
+        //[HttpGet]
+        //[Route("GetPersonalInformation")]
+        //public IActionResult GetPatientPersonalInformation(string idCard)
+        //{
+        //    ConnectionDb connectionDb = new();
+        //    ExcGetPatientPersonalInformation(connectionDb, idCard);
+        //    return Ok(ReadGetPatientPersonalInformation(connectionDb));
+        //}
+
         [HttpGet]
         [Route("GetPersonalInformation")]
-        public IActionResult GetPatientPersonalInformation(string idCard)
+        public IActionResult GetPatientPersonalInformation()
         {
             ConnectionDb connectionDb = new();
-            ExcGetPatientPersonalInformation(connectionDb, idCard);
+            ExcGetPatientPersonalInformation(connectionDb, "1-1818-0555");
             return Ok(ReadGetPatientPersonalInformation(connectionDb));
         }
 
