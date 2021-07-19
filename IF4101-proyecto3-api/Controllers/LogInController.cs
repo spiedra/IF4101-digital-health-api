@@ -13,14 +13,14 @@ namespace IF4101_proyecto3_api.Controllers
     {
         [HttpPost]
         [Route("LogIn")]
-        public IActionResult ValidateInputLogIn([FromBody] PatientModel patient)
+        public ActionResult ValidateInputLogIn([FromBody] PatientModel patient)
         {
-            ConnectionDb connectionDb = new();
-            ExcValidateLogIn(connectionDb, patient);
-            if (CommonMethod.ReadParameterReturn(connectionDb))
-            {
-                return Ok();
-            }
+            //ConnectionDb connectionDb = new();
+            //ExcValidateLogIn(connectionDb, patient);
+            //if (CommonMethod.ReadParameterReturn(connectionDb))
+            //{
+            //    return Ok("OK");
+            //}
             return Ok("Patient not found");
         }
 

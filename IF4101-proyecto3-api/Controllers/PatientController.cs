@@ -24,16 +24,16 @@ namespace IF4101_proyecto3_api.Controllers
             return Ok("User already exist");
         }
 
-        [HttpPost]
+        [HttpGet]
         [Route("GetPersonalInformation")]
-        public IActionResult GetPatientPersonalInformation([FromBody] PatientModel patient)
+        public IActionResult GetPatientPersonalInformation(string idCard)
         {
             ConnectionDb connectionDb = new();
-            ExcGetPatientPersonalInformation(connectionDb, patient);
+            ExcGetPatientPersonalInformation(connectionDb, idCard);
             return Ok(ReadGetPatientPersonalInformation(connectionDb));
         }
 
-        [HttpPost]
+        [HttpPut]
         [Route("UpdatePersonalInformation")]
         public IActionResult UpdatePatientPersonalInformation([FromBody] PatientModel patient)
         {
@@ -70,12 +70,12 @@ namespace IF4101_proyecto3_api.Controllers
             connectionDb.ExcecuteReader();
         }
 
-        private static void ExcGetPatientPersonalInformation(ConnectionDb connectionDb, PatientModel patient)
+        private static void ExcGetPatientPersonalInformation(ConnectionDb connectionDb, string idCard)
         {
             string paramIdCard = "@param_ID_CARD"
                 , commandText = "PATIENT.sp_GET_PATIENT_PERSONAL_INFORMATION";
             connectionDb.InitSqlComponents(commandText);
-            connectionDb.CreateParameter(paramIdCard, SqlDbType.VarChar, patient.IdCard);
+            connectionDb.CreateParameter(paramIdCard, SqlDbType.VarChar, idCard);
             connectionDb.ExcecuteReader();
         }
 

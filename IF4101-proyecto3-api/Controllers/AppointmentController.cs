@@ -13,7 +13,7 @@ namespace IF4101_proyecto3_api.Controllers
     [ApiController]
     public class AppointmentController : ControllerBase
     {
-        [HttpPost]
+        [HttpGet]
         [Route("GetAppointmentByCard")]
         public IActionResult GetAppointmentByCard(string patientCardId)
         {
