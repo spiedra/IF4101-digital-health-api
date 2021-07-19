@@ -7,12 +7,12 @@ using System.Linq;
 
 namespace IF4101_proyecto3_api.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class LogInController : ControllerBase
     {
         [HttpPost]
-        [Route("/LogIn")]
+        [Route("LogIn")]
         public ActionResult ValidateInputLogIn([FromBody] PatientModel patient)
         {
             //ConnectionDb connectionDb = new();

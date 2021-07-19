@@ -11,12 +11,12 @@ using System.Threading.Tasks;
 
 namespace IF4101_proyecto3_api.Controllers
 {
-    //[Route("api/[controller]")]
+    [Route("api/[controller]")]
     [ApiController]
     public class AllergyController : ControllerBase
     {
         [HttpGet]
-        [Route("/GetPatientAllergies")]
+        [Route("GetPatientAllergies")]
         public IActionResult Get(string IdCard)
         {
             ConnectionDb connectionDb = new ConnectionDb();
